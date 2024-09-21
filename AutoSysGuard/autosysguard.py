@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QProcess
 import os
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, QMenu, QTextEdit, QVBoxLayout, QWidget, QProgressBar, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QAction, QMenu, QTextEdit, QVBoxLayout, QWidget, QProgressBar, QPushButton
 from PyQt5.QtCore import Qt, QTimer
 import subprocess
 
@@ -27,22 +27,9 @@ class AutoSysGuard(QMainWindow):
         self.central_widget = QWidget(self)
         self.setCentralWidget(self.central_widget)
         self.layout = QVBoxLayout(self.central_widget)
-
-        self.output_area = QTextEdit(self)
-        self.output_area.setReadOnly(True)
-        self.layout.addWidget(self.output_area)
-
-        self.progress_bar = QProgressBar(self)
-        self.layout.addWidget(self.progress_bar)
-
-        menubar = self.menuBar()
-
-        system_menu = menubar.addMenu('System')
-        system_menu.addAction(self.create_menu_action('Run All Scans', self.run_all_scans))
         
         self.process = None  # For running bash scripts
 
-    def initUI(self):
         self.setWindowTitle('AutoSysGuard - Automated System Management Tool')
         self.setGeometry(100, 100, 800, 600)
 
@@ -101,6 +88,18 @@ class AutoSysGuard(QMainWindow):
         more_menu.addAction(self.create_menu_action('Setup Intrusion Detection System (IDS)', self.setup_ids))
 
         self.show()
+        button_layout = QHBoxLayout()
+        self.layout.addLayout(button_layout)
+
+        self.stop_button = QPushButton("Stop", self)
+        self.stop_button.clicked.connect(self.stop_process)
+        button_layout.addWidget(self.stop_button)
+
+        self.clear_button = QPushButton("Clear Screen", self)
+        self.clear_button.clicked.connect(self.clear_output)
+        button_layout.addWidget(self.clear_button)
+
+
     
     def create_menu_action(self, name, function):
         action = QAction(name, self)
@@ -260,19 +259,63 @@ class AutoSysGuard(QMainWindow):
         output = subprocess.getoutput('./scripts/setup_ids.sh')
         self.update_output(output)
 
+
+    # RAM Monitoring
     def ram_monitor(self):
-        self.update_output("Monitoring Ram...")
-        output = subprocess.getoutput('/media/kunal/DE41-8946/AutoSysGuard/Scripts/Monitoring/memory.sh')
-        self.update_output(output)
+        self.update_output("Monitoring RAM...")
+        self.process = QProcess(self)
+        self.process.readyReadStandardOutput.connect(self.handle_output)
+        self.process.start('bash', ['-c', 'AutoSysGuard/Scripts/Monitoring/memory.sh'])  # Run the RAM monitor in Bash
+        self.start_progress()
+
+    # CPU Monitoring
     def cpu_monitor(self):
-        self.update_output("Setting Up Intrusion Detection System (IDS)...")
-        output = subprocess.getoutput('./scripts/Monitoring/cpu.sh')
-        self.update_output(output)
+        self.update_output("Monitoring CPU...")
+        self.process = QProcess(self)
+        self.process.readyReadStandardOutput.connect(self.handle_output)
+        self.process.start('bash', ['-c', 'AutoSysGuard/Scripts/Monitoring/cpu.sh'])  # Run the CPU monitor in Bash
+        self.start_progress()
+
+    # Disk Monitoring
     def disk_monitor(self):
-        self.update_output("Setting Up Intrusion Detection System (IDS)...")
-        output = subprocess.getoutput('./scripts/Monitoring/disk.sh')
-        self.update_output(output)
+        self.update_output("Monitoring Disk...")
+        self.process = QProcess(self)
+        self.process.readyReadStandardOutput.connect(self.handle_output)
+        self.process.start('bash', ['-c', 'AutoSysGuard/Scripts/Monitoring/disk.sh'])  # Run the Disk monitor in Bash
+        self.start_progress()
+
+
+
+    #Handle Output
+    def handle_output(self):
+        output = self.process.readAllStandardOutput().data().decode()
+
+        # Clear the output when the ANSI escape sequence to clear screen is detected
+        if "\033[2J" in output:
+            self.clear_output()  # Call the newly defined clear_output method
         
+        # Remove the clear screen sequence from the output to display properly
+        output = output.replace("\033[2J", "")
+        self.update_output(output)
+
+    def clear_output(self):
+        self.output_area.clear()  # Correct the reference to the output area
+
+
+
+    # Stop process
+    def stop_process(self):
+        if self.process and self.process.state() == QProcess.Running:
+            self.process.terminate()
+            self.update_output("Process stopped.")
+            self.stop_progress()    
+    
+    
+    def clear_output(self):
+        self.output_area.clear()  # Clears the GUI display widget (output_area)
+
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     gui = AutoSysGuard()

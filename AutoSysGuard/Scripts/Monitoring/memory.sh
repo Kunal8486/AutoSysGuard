@@ -1,6 +1,9 @@
 #!/bin/bash
 while true; do
-    memory_usage=$(free | grep Mem | awk '{print $3/$2 * 100.0}')
-    log_message "Memory Usage: $memory_usage%"
-    sleep 5 
+  echo "Monitoring RAM..."
+  free -h | awk 'NR==1{print ""; print "Memory Usage:"} NR==2{printf "Total: %s, Used: %s, Free: %s\n", $2, $3, $4}'
+  echo "-----------------------"
+  sleep 1 
+  echo -e "\033[2J"  # Clear screen in terminal (marker to clear GUI)
+
 done

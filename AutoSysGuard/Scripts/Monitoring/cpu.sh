@@ -1,6 +1,7 @@
 #!/bin/bash
 while true; do
-    cpu_usage=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')
-    echo "CPU Usage: $cpu_usage%"
-    sleep 5  # Update interval
+  mpstat 1 1 | awk '/^Average:/ {printf "User: %.1f%%, System: %.1f%%, Idle: %.1f%%\n", $3, $5, $12}'
+  sleep 1 
+  echo -e "\033[2J"  # Clear screen in terminal (marker to clear GUI)
+
 done
