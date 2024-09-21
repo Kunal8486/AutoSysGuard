@@ -87,12 +87,9 @@ class AutoSysGuard(QMainWindow):
         security_menu.addAction(self.create_menu_action('Compliance Checker', self.run_compliance_checker))
         security_menu.addAction(self.create_menu_action('User Behavior Analytics', self.run_user_behavior_analytics))
 
-
-        self.backup_button = QPushButton("Run Backup", self)
-        self.backup_button.clicked.connect(self.run_backup)
-        self.layout.addWidget(self.backup_button)
         
         maintenance_menu = menubar.addMenu('Maintenance')
+        maintenance_menu.addAction(self.create_menu_action('Backup', self.run_backup))
 
         monitoring_menu = menubar.addMenu('Monitoring')
         monitoring_menu.addAction(self.create_menu_action("Ram Monitoring", self.ram_monitor))
@@ -239,7 +236,8 @@ class AutoSysGuard(QMainWindow):
 
     def run_backup(self):
         self.update_output("Launching Backup...")
-        subprocess.Popen(['python3', 'backup.py'])
+        subprocess.Popen(['python3', 'AutoSysGuard/Scripts/Maintenance/backup.py'])
+        self.update_output("Launched!")
         self.start_progress() 
 
     def run_anomaly_detection(self):

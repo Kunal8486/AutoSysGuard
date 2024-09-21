@@ -59,7 +59,7 @@ class BackupWindow(QDialog):
 
         if source and destination:
             # Call Bash script for backup
-            command = ['Scripts/Backup/backup.sh', source, destination, 'compress' if enable_compression else 'no-compress']
+            command = ['AutoSysGuard/Scripts/Maintenance/backup.sh', source, destination, 'compress' if enable_compression else 'no-compress']
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             output, error = process.communicate()
 
