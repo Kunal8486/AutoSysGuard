@@ -30,13 +30,6 @@ class AutoSysGuard(QMainWindow):
         
         self.process = None  # For running bash scripts
 
-        self.setWindowTitle('AutoSysGuard - Automated System Management Tool')
-        self.setGeometry(100, 100, 800, 600)
-
-        self.central_widget = QWidget(self)
-        self.setCentralWidget(self.central_widget)
-        self.layout = QVBoxLayout(self.central_widget)
-
         self.output_area = QTextEdit(self)
         self.output_area.setReadOnly(True)
         self.layout.addWidget(self.output_area)
@@ -77,6 +70,8 @@ class AutoSysGuard(QMainWindow):
         
         maintenance_menu = menubar.addMenu('Maintenance')
         maintenance_menu.addAction(self.create_menu_action('Backup', self.run_backup))
+        maintenance_menu.addAction(self.create_menu_action('System Backup', self.system_backup))
+
 
         monitoring_menu = menubar.addMenu('Monitoring')
         monitoring_menu.addAction(self.create_menu_action("Ram Monitoring", self.ram_monitor))
@@ -238,6 +233,11 @@ class AutoSysGuard(QMainWindow):
         subprocess.Popen(['python3', 'AutoSysGuard/Scripts/Maintenance/backup.py'])
         self.update_output("Launched!")
         self.start_progress() 
+
+    def system_backup(self):
+        self.update_output("Launching System Backup...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Maintenance/system_backup.sh')
+        self.update_output(output) 
 
     def run_anomaly_detection(self):
         self.update_output("Running Machine Learning-Based Anomaly Detection...")
