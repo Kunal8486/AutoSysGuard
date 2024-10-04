@@ -1,17 +1,38 @@
 #!/bin/bash
 
-# Network Traffic Monitor Script
-TRAFFIC_LOG="/var/log/autosysguard/network_traffic.log"
-mkdir -p /var/log/autosysguard
+# Function to check if nload is installed
+check_nload() {
+    if ! command -v nload &> /dev/null; then
+        zenity --error --text="nload is not installed. Please install it using: sudo apt-get install nload"
+        exit 1
+    fi
+}
 
-echo "Network Traffic Monitoring - $(date)" >> "$TRAFFIC_LOG"
+# Function to get available network interfaces
+get_network_interfaces() {
+    interfaces=$(ip -o link show | awk -F': ' '{print $2}' | grep -v lo)
+    echo "$interfaces"
+}
 
-# Check if iftop is installed
-if command -v iftop &> /dev/null; then
-    echo "Monitoring network traffic with iftop..." >> "$TRAFFIC_LOG"
-    sudo iftop -t -s 10 >> "$TRAFFIC_LOG"  # Runs iftop in text mode for 10 seconds
-else
-    echo "iftop is not installed. Please install it using 'sudo apt install iftop'." >> "$TRAFFIC_LOG"
-fi
+# Function to select network interface and launch nload
+select_interface() {
+    local interface=$(zenity --list --title="Network Traffic Monitor" --text="Select the network interface:" \
+        --column="Interface" $(get_network_interfaces) --height=300 --width=400)
 
-echo "-----------------------" >> "$TRAFFIC_LOG"
+    if [[ -z "$interface" ]]; then
+        zenity --error --text="No interface selected. Exiting."
+        exit 1
+    fi
+
+    # Launch nload in a new terminal window
+    gnome-terminal -- nload "$interface"
+}
+
+# Main function
+main() {
+    check_nload
+    select_interface
+}
+
+# Run the main function
+main

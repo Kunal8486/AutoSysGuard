@@ -71,6 +71,7 @@ class AutoSysGuard(QMainWindow):
         maintenance_menu = menubar.addMenu('Maintenance')
         maintenance_menu.addAction(self.create_menu_action('Backup', self.run_backup))
         maintenance_menu.addAction(self.create_menu_action('System Backup', self.system_backup))
+        maintenance_menu.addAction(self.create_menu_action('Schedule Automatic Backup', self.schedule_automatic_backup))
 
 
         monitoring_menu = menubar.addMenu('Monitoring')
@@ -134,27 +135,27 @@ class AutoSysGuard(QMainWindow):
 
     def run_arp_spoofing_detection(self):
         self.update_output("Running ARP Spoofing Detection...")
-        output = subprocess.getoutput('./scripts/networks/arp_spoofing_detection.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/arp_spoofing_detection.sh')
         self.update_output(output)
 
     def run_firewall_config(self):
         self.update_output("Configuring Firewall...")
-        output = subprocess.getoutput('./scripts/networks/firewall_config.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/firewall_config.sh')
         self.update_output(output)
 
     def run_network_traffic_monitor(self):
         self.update_output("Monitoring Network Traffic...")
-        output = subprocess.getoutput('./scripts/networks/network_traffic_monitor.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/network_traffic_monitor.sh')
         self.update_output(output)
 
     def run_port_scan(self):
         self.update_output("Running Port Scan...")
-        output = subprocess.getoutput('./scripts/networks/port_scan.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/port_scan.sh')
         self.update_output(output)
 
     def run_ssh_hardening(self):
         self.update_output("Hardening SSH...")
-        output = subprocess.getoutput('./scripts/networks/ssh_hardening.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/ssh_hardening.sh')
         self.update_output(output)
     
     def run_brute_force_detection_system(self):
@@ -237,6 +238,11 @@ class AutoSysGuard(QMainWindow):
     def system_backup(self):
         self.update_output("Launching System Backup...")
         output = subprocess.getoutput('AutoSysGuard/Scripts/Maintenance/system_backup.sh')
+        self.update_output(output) 
+
+    def schedule_automatic_backup(self):
+        self.update_output("Scheduling Automatic Backup...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Maintenance/automatic_backup.sh')
         self.update_output(output) 
 
     def run_anomaly_detection(self):

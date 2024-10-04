@@ -1,31 +1,49 @@
 #!/bin/bash
 
-# Define username
-USERNAME="kunal"  # Replace with your actual username
+# AutoSysGuard Backup Script
 
-# Backup destination
-BACKUP_DIR="./"
-TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-BACKUP_FILE="$BACKUP_DIR/backup_$TIMESTAMP.tar.gz"
+# Set the username variable
+username="kunal"
 
-# Directories to back up
-DIRS_TO_BACKUP=(
-    "/home/$USERNAME"                # User data
-    "/etc"                           # System configuration
-    "/var/lib/dpkg"                 # Installed packages info
-    "/var/cache/apt/archives"        # Cached package files
-    "/var/www"                       # Web server files (if applicable)
-    "/var/lib/mysql"                 # MySQL database files (if applicable)
-    "/var/lib/postgresql"            # PostgreSQL database files (if applicable)
-    "/var/mail"                      # Mail storage (if applicable)
-    "/var/log"                       # Log files
-   
+# Backup destination directory
+backup_dest="./backup"
+
+# Create backup directory if it doesn't exist
+mkdir -p "$backup_dest"
+
+# Important directories to backup (avoiding personal files)
+backup_dirs=(
+    "/etc"
+    "/var/log"
+    "/var/spool"
+    "/root"
+    "/boot"
 )
 
-# Create the backup
-tar -czf "$BACKUP_FILE" "${DIRS_TO_BACKUP[@]}"
+# Timestamp for the backup file
+timestamp=$(date +%Y-%m-%d_%H-%M-%S)
+backup_file="important_backup_$timestamp.tar"
 
-# Optional: Remove backups older than 7 days
-find "$BACKUP_DIR" -type f -name 'backup_*.tar.gz' -mtime +7 -exec rm {} \;
+# Function to perform the backup
+perform_backup() {
+    tar --exclude="/home/$username/Desktop" \
+        --exclude="/home/$username/Downloads" \
+        --exclude="/home/$username/Documents" \
+        --exclude="/home/$username/Music" \
+        --exclude="/home/$username/Pictures" \
+        --exclude="/home/$username/Videos" \
+        -cvf "$backup_dest/$backup_file" "${backup_dirs[@]}"
+}
 
-echo "Backup created at $BACKUP_FILE"
+# Function to check the backup status
+check_backup_status() {
+    if [ $? -eq 0 ]; then
+        echo "Backup successfully created: $backup_dest/$backup_file"
+    else
+        echo "Backup creation failed."
+    fi
+}
+
+# Main script execution
+perform_backup
+check_backup_status

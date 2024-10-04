@@ -1,51 +1,49 @@
 #!/bin/bash
 
-# Required: Install 'arp-scan' if not already installed.
-# sudo apt-get install arp-scan
+# Log file
+LOGFILE="arp_detection.log"
 
-INTERFACE="eth0"
-CURRENT_ARP_OUTPUT="/tmp/current_arp_scan.txt"
-KNOWN_ARP_FILE="/etc/arp_known_hosts.txt"
+# Get the network interface from the user using Zenity
+INTERFACE=$(zenity --list --title="Select Network Interface" --column="Interfaces" $(ip link show | awk -F: '$0 !~ "lo|vir|veth|docker" {print $2}' | tr -d ' '))
 
-log_message() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
-}
-
-# Request sudo privileges at the start
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root. Please enter your password."
-   sudo -v || { echo "Unable to obtain sudo privileges. Exiting."; exit 1; }
-fi
-
-log_message "Performing ARP scan on network interface $INTERFACE..."
-
-# Ensure we have permission to write to the current ARP output file
-sudo touch "$CURRENT_ARP_OUTPUT"
-sudo chmod 644 "$CURRENT_ARP_OUTPUT"
-
-# Run the ARP scan and redirect output to the file
-sudo arp-scan --interface="$INTERFACE" --localnet > "$CURRENT_ARP_OUTPUT" 2>/dev/null
-
-if [[ ! -f $KNOWN_ARP_FILE ]]; then
-    log_message "Known hosts file not found at $KNOWN_ARP_FILE. Creating a new one."
-    sudo cp "$CURRENT_ARP_OUTPUT" "$KNOWN_ARP_FILE"
-    sudo chmod 644 "$KNOWN_ARP_FILE"
-    log_message "Known hosts file created. Please rerun the script."
+if [ -z "$INTERFACE" ]; then
+    zenity --error --text="No interface selected. Exiting."
     exit 1
 fi
 
-log_message "Comparing current ARP scan results with known valid MAC addresses..."
+echo "Selected interface: $INTERFACE"
 
-while read -r ip mac _; do
-    if [[ "$ip" != "Interface" && "$ip" != "Ending" ]]; then
-        known_mac=$(grep "$ip" "$KNOWN_ARP_FILE" | awk '{print $2}')
-        
-        if [[ -z "$known_mac" ]]; then
-            log_message "New device detected: $ip ($mac) - Not in the known hosts file."
-        elif [[ "$known_mac" != "$mac" ]]; then
-            log_message "WARNING: Potential ARP Spoofing detected for $ip! Expected $known_mac but found $mac."
-        fi
+arp_table=$(arp -n)
+declare -A arp_map
+spoof_count=0
+
+while read -r line; do
+    ip=$(echo $line | awk '{print $1}')
+    mac=$(echo $line | awk '{print $3}')
+    if [[ $ip != "" && $mac != "" ]]; then
+        arp_map[$ip]+="$mac "
     fi
-done < "$CURRENT_ARP_OUTPUT"
+done <<< "$arp_table"
 
-log_message "ARP spoofing detection completed."
+echo "Checking for potential ARP spoofing..."
+for ip in "${!arp_map[@]}"; do
+    macs=(${arp_map[$ip]})
+    if [ ${#macs[@]} -gt 1 ]; then
+        echo "Potential ARP Spoofing detected for IP: $ip"
+        echo "Associated MAC addresses: ${arp_map[$ip]}"
+        spoofing_detected=true
+        spoof_count=$((spoof_count + 1))
+        notify-send "ARP Spoofing Alert" "Potential ARP Spoofing detected for IP: $ip"
+        echo "$(date +"%Y-%m-%d %H:%M:%S") - Potential ARP Spoofing detected for IP: $ip" >> "$LOGFILE"
+    fi
+done
+
+if [ "$spoofing_detected" = true ]; then
+    echo "ARP Spoofing Detection Failed: Potential spoofing detected."
+else
+    echo "ARP Spoofing Detection Passed: No issues detected."
+fi
+
+echo "Summary of Detection:"
+echo "Total Potential Spoofing Instances: $spoof_count"
+echo "ARP Spoofing Detection completed."
