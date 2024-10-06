@@ -21,6 +21,9 @@ class AutoSysGuard(QMainWindow):
         self.initUI()
     
     def initUI(self):
+
+        with open("AutoSysGuard/style.qss", "r") as f:
+            self.setStyleSheet(f.read())
         self.setWindowTitle('AutoSysGuard - Automated System Management Tool')
         self.setGeometry(100, 100, 800, 600)
 
@@ -43,6 +46,7 @@ class AutoSysGuard(QMainWindow):
         system_menu.addAction(self.create_menu_action('Run All Scans', self.run_all_scans))
 
         network_menu = menubar.addMenu('Network')
+        network_menu.addAction(self.create_menu_action('IP Scanner', self.ipscan))
         network_menu.addAction(self.create_menu_action('ARP Spoofing Detection', self.run_arp_spoofing_detection))
         network_menu.addAction(self.create_menu_action('Firewall Configuration', self.run_firewall_config))
         network_menu.addAction(self.create_menu_action('Network Traffic Monitor', self.run_network_traffic_monitor))
@@ -133,6 +137,11 @@ class AutoSysGuard(QMainWindow):
         self.run_security_audit()
         self.stop_progress()
 
+    def ipscan(self):
+        self.update_output("Performing IP's Scan...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/ip_scanner.sh')
+        self.update_output(output)
+
     def run_arp_spoofing_detection(self):
         self.update_output("Running ARP Spoofing Detection...")
         output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/arp_spoofing_detection.sh')
@@ -149,84 +158,86 @@ class AutoSysGuard(QMainWindow):
         self.update_output(output)
 
     def run_port_scan(self):
-        self.update_output("Running Port Scan...")
+        self.update_output("Port Scan Completed.")
         output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/port_scan.sh')
         self.update_output(output)
 
     def run_ssh_hardening(self):
-        self.update_output("Hardening SSH...")
+        self.update_output("Hardening SSH Done...")
         output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/ssh_hardening.sh')
         self.update_output(output)
     
     def run_brute_force_detection_system(self):
         self.update_output("Running Brute Force Detection System...")
         try:
-            output = subprocess.getoutput('./scripts/networks/brute_force_detection.sh')
+            output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/brute_force_detection.sh')
             self.update_output(output)
+            self.update_output("Completed..")
+
         except Exception as e:
             self.update_output(f"Error: {str(e)}")
 
     def run_intrusion_detection_system(self):
-        self.update_output("Running Intrusion Detection System...")
+        self.update_output("Intrusion Detection System Completed")
         try:
-            output = subprocess.getoutput('./scripts/networks/intrusion_detection_system.sh')
+            output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/intrusion_detection_system.sh')
             self.update_output(output)
         except Exception as e:
             self.update_output(f"Error: {str(e)}")  
 
     def run_packet_sniffing_detection(self):
-        self.update_output("Running Packet Sniffing Detection...")
-        output = subprocess.getoutput('./scripts/networks/packet_sniffing_detection.sh')
+        self.update_output(" Packet Sniffing Detection Completed")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/packet_sniffing_detection.sh')
         self.update_output(output)
 
     def run_dns_spoofing_detection(self):
-        self.update_output("Running DNS Spoofing Detection...")
-        output = subprocess.getoutput('./scripts/networks/dns_spoofing_detection.sh')
+        self.update_output("DNS Spoofing Detection Completed")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/dns_spoofing_detection.sh')
         self.update_output(output)
 
     def run_vpn_configuration_check(self):
-        self.update_output("Checking VPN Configuration...")
-        output = subprocess.getoutput('./scripts/networks/vpn_configuration_check.sh')
+        self.update_output("Checking VPN Configuration Completed.")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/vpn_configuration_check.sh')
         self.update_output(output)
 
     def run_network_segmentation_audit(self):
         self.update_output("Auditing Network Segmentation...")
-        output = subprocess.getoutput('./scripts/networks/network_segmentation_audit.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/network_segmentation_audit.sh')
         self.update_output(output)
 
     def run_wireless_network_security_check(self):
         self.update_output("Running Wireless Network Security Check...")
-        output = subprocess.getoutput('./scripts/networks/wireless_network_security_check.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/wireless_network_security_check.sh')
         self.update_output(output)
 
     def run_ip_whitelisting_management(self):
         self.update_output("Managing IP Whitelisting...")
-        output = subprocess.getoutput('./scripts/networks/ip_whitelisting_management.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/ip_whitelisting_management.sh')
         self.update_output(output)
 
     def run_rogue_dhcp_server_detection(self):
         self.update_output("Detecting Rogue DHCP Servers...")
-        output = subprocess.getoutput('./scripts/networks/rogue_dhcp_server_detection.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/rogue_dhcp_server_detection.sh')
         self.update_output(output)
 
     def run_mac_address_filtering(self):
         self.update_output("Running MAC Address Filtering...")
-        output = subprocess.getoutput('./scripts/networks/mac_address_filtering.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/mac_address_filtering.sh')
         self.update_output(output)
 
     def run_ssl_tls_configuration_analyzer(self):
         self.update_output("Analyzing SSL/TLS Configuration...")
-        output = subprocess.getoutput('./scripts/networks/ssl_tls_configuration_analyzer.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/ssl_tls_configuration_analyzer.sh')
         self.update_output(output)
 
     def run_open_ports_vulnerability_scanning(self):
         self.update_output("Running Open Ports and Vulnerability Scanning...")
-        output = subprocess.getoutput('./scripts/networks/open_ports_vulnerability_scanning.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/open_ports_vulnerability_scanning.sh')
         self.update_output(output)  
 
     def run_security_audit(self):
         self.update_output("Performing Security Audit...")
-        output = subprocess.getoutput('./scripts/security_audit.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/audit.sh')
         self.update_output(output)
 
     def run_backup(self):

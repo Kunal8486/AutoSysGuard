@@ -10,7 +10,9 @@ class BackupWindow(QDialog):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle('Backup Settings')
+        with open("AutoSysGuard/style.qss", "r") as f:
+            self.setStyleSheet(f.read())
+        self.setWindowTitle('Auto Sys Guard | Backup Settings')
         self.setGeometry(150, 150, 500, 300)
 
         self.layout = QVBoxLayout(self)

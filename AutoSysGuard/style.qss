@@ -1,121 +1,128 @@
-/* Main Window Style */
-QMainWindow {
-    background-color: #2C3E50;
-    color: #ECF0F1;
+/* Lighter theme with vibrant colors */
+
+/* Main Window */
+QWidget {
+    background-color: #f9f9f9;  /* Light background */
+    color: #333333;             /* Dark text for good contrast */
     font-family: Arial, sans-serif;
+}
+
+/* Buttons */
+QPushButton {
+    background-color: #4CAF50;  /* Vibrant green for buttons */
+    color: white;               /* White text for contrast */
+    border: 1px solid #388E3C;  /* Slightly darker green border */
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+QPushButton:hover {
+    background-color: #45a049;  /* Slightly darker green on hover */
+}
+
+QPushButton:pressed {
+    background-color: #388E3C;  /* Even darker when pressed */
+}
+
+/* Labels */
+QLabel {
+    color: #2c3e50;             /* Darker vibrant blue-gray for labels */
     font-size: 14px;
 }
 
-/* Menu Bar Style */
-QMenuBar {
-    background-color: #34495E;
-    color: #ECF0F1;
-    border-bottom: 2px solid #2980B9;
+/* Input Fields */
+QLineEdit, QTextEdit, QComboBox {
+    background-color: #ffffff;  /* White background for inputs */
+    color: #333333;             /* Dark text for readability */
+    border: 1px solid #cccccc;  /* Light border around input fields */
+    padding: 6px;
+    border-radius: 4px;
 }
 
-QMenuBar::item {
-    background-color: #34495E;
-    color: #ECF0F1;
-    padding: 5px 15px;
+QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
+    border: 1px solid #4CAF50;  /* Green border when focused */
 }
 
-QMenuBar::item:selected {
-    background-color: #2980B9;
-    color: #FFFFFF;
+/* Checkboxes and Radio Buttons */
+QCheckBox, QRadioButton {
+    color: #333333;             /* Dark color for text */
 }
 
-/* Menu Style */
-QMenu {
-    background-color: #34495E;
-    border: 1px solid #2980B9;
-    color: #ECF0F1;
+QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+    background-color: #4CAF50;  /* Green for checked state */
+    border: 1px solid #388E3C;
 }
 
-QMenu::item {
-    background-color: #34495E;
-    padding: 5px 20px;
-    margin: 2px 1px;
+QCheckBox::indicator:unchecked, QRadioButton::indicator:unchecked {
+    background-color: #ffffff;  /* White for unchecked state */
+    border: 1px solid #cccccc;
 }
 
-QMenu::item:selected {
-    background-color: #E67E22;
-    color: #FFFFFF;
-}
-
-/* Text Edit (Output Area) Style */
-QTextEdit {
-    background-color: #1ABC9C;
-    color: #2C3E50;
-    border: 2px solid #16A085;
-    padding: 10px;
-    font-family: Courier, monospace;
-    font-size: 12px;
-}
-
-/* Progress Bar Style */
+/* Progress Bars */
 QProgressBar {
-    background-color: #F39C12;
-    border: 2px solid #D35400;
-    height: 20px;
+    background-color: #f0f0f0;  /* Light background */
+    color: #333333;             /* Dark text */
+    border: 1px solid #cccccc;
+    border-radius: 4px;
     text-align: center;
-    color: #2C3E50;
-    border-radius: 5px;
 }
 
 QProgressBar::chunk {
-    background-color: #E74C3C;
-    border-radius: 5px;
+    background-color: #4CAF50;  /* Green chunk for progress */
+    width: 20px;
 }
 
-/* Vertical Scroll Bar Style */
+/* Scrollbars */
 QScrollBar:vertical {
-    background-color: #3498DB;
-    width: 15px;
-    margin: 22px 0 22px 0;
+    background-color: #f0f0f0;
+    width: 16px;
 }
 
 QScrollBar::handle:vertical {
-    background-color: #8E44AD;
-    min-height: 20px;
-    border-radius: 7px;
+    background-color: #4CAF50;  /* Green scrollbar handle */
+    border: 1px solid #388E3C;
+    border-radius: 4px;
 }
 
 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
-    background-color: #3498DB;
-    height: 20px;
-    subcontrol-origin: margin;
-    subcontrol-position: bottom;
+    background-color: #f0f0f0;
+    border: 1px solid #cccccc;
+    height: 16px;
 }
 
-QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
-    background-color: #8E44AD;
-    width: 3px;
-    height: 3px;
+/* Tooltips */
+QToolTip {
+    background-color: #4CAF50;  /* Green background for tooltips */
+    color: white;               /* White text */
+    border: 1px solid #388E3C;
+    padding: 4px;
+    border-radius: 4px;
 }
 
-/* Horizontal Scroll Bar Style */
-QScrollBar:horizontal {
-    background-color: #3498DB;
-    height: 15px;
-    margin: 0px 22px 0px 22px;
+/* Menubar */
+QMenuBar {
+    background-color: #f9f9f9;  /* Light background */
+    color: #333333;             /* Dark text */
 }
 
-QScrollBar::handle:horizontal {
-    background-color: #8E44AD;
-    min-width: 20px;
-    border-radius: 7px;
+QMenuBar::item {
+    background-color: transparent;
+    color: #333333;
 }
 
-QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
-    background-color: #3498DB;
-    width: 20px;
-    subcontrol-origin: margin;
-    subcontrol-position: right;
+QMenuBar::item:selected {
+    background-color: #4CAF50;  /* Green on hover */
+    color: white;
 }
 
-/* Action Button Style */
-QAction {
-    color: #ECF0F1;
+/* Menus */
+QMenu {
+    background-color: #ffffff;  /* White background for menus */
+    color: #333333;             /* Dark text */
+    border: 1px solid #cccccc;
 }
 
-/* Placeholder for Further Customizations */
+QMenu::item:selected {
+    background-color: #4CAF50;  /* Green on hover */
+    color: white;
+}
