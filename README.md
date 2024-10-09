@@ -85,3 +85,41 @@ AutoSysGuard is developed using a combination of Python and Zenity for the GUI a
 2. Ensure Python, Zenity, and required dependencies are installed:
    ```bash
    sudo apt install python3 zenity
+
+### Backup Functionality
+
+1. Click on the "Backup" button from the GUI.
+2. Select the files or directories to back up and specify the destination.
+3. Choose backup frequency (automatic/scheduled).
+4. Press "Start Backup."
+
+### System Auditing
+
+1. Open the "System Audit" section.
+2. Select audit categories (e.g., Network Configuration, Firewall Configuration).
+3. Review the audit report and take corrective actions based on recommendations.
+
+---
+
+## Contributions
+
+Contributions to AutoSysGuard are welcome. If you wish to contribute:
+1. Fork the repository from GitHub.
+2. Create a new branch for your feature or fix.
+3. Submit a pull request with a clear description of the changes.
+
+---
+
+## Contact Information
+
+For support or inquiries, contact **Kunal Kumar**:
+- Email: [kunalkumar8486@gmail.com](mailto:kunalkumar8486@gmail.com)
+- LinkedIn: [Kunal Kumar](https://www.linkedin.com/in/kunalkumar8486/)
+- GitHub: [Kunal8486](https://github.com/Kunal8486)
+
+---
+
+## Future Enhancements
+
+- **Virus Scanning**: An additional feature to automatically scan tar files for viruses.
+- **Advanced Reporting**: More detailed insights on system performance and security threats.
