@@ -4,6 +4,9 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QAction, QMenu, QTextEdit, QVBoxLayout, QWidget, QProgressBar, QPushButton
 from PyQt5.QtCore import Qt, QTimer
 import subprocess
+from PyQt5.QtGui import QIcon,QPixmap
+from PyQt5.QtWidgets import QLabel
+
 
 class AutoSysGuard(QMainWindow):
     def __init__(self):
@@ -25,6 +28,8 @@ class AutoSysGuard(QMainWindow):
         with open("AutoSysGuard/style.qss", "r") as f:
             self.setStyleSheet(f.read())
         self.setWindowTitle('AutoSysGuard - Automated System Management Tool')
+        self.setWindowIcon(QIcon('AutoSysGuard/img/logo.ico'))
+
         self.setGeometry(100, 100, 800, 600)
 
         self.central_widget = QWidget(self)
@@ -35,6 +40,21 @@ class AutoSysGuard(QMainWindow):
 
         self.output_area = QTextEdit(self)
         self.output_area.setReadOnly(True)
+
+        # Initialize the output area (QTextEdit)
+        self.output_area = QTextEdit(self)
+        self.output_area.setReadOnly(True)
+
+        # Set the background image for the QTextEdit
+        self.output_area.setStyleSheet("""
+            QTextEdit {
+                background-image: url(AutoSysGuard/img/Logo2.png);
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+        """)
+
+
         self.layout.addWidget(self.output_area)
 
         self.progress_bar = QProgressBar(self)
