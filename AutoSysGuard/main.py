@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QProcess
 import os
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QAction, QMenu, QTextEdit, QVBoxLayout, QWidget, QProgressBar, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QAction, QMenu, QTextEdit, QVBoxLayout, QWidget, QProgressBar, QPushButton,  QGraphicsOpacityEffect
 from PyQt5.QtCore import Qt, QTimer
 import subprocess
 from PyQt5.QtGui import QIcon,QPixmap
@@ -48,9 +48,10 @@ class AutoSysGuard(QMainWindow):
         # Set the background image for the QTextEdit
         self.output_area.setStyleSheet("""
             QTextEdit {
-                background-image: url(AutoSysGuard/img/Logo2.png);
+                background-image: url(AutoSysGuard/img/Logo3.png);
                 background-repeat: no-repeat;
                 background-position: center;
+                background-attachment: fixed;
             }
         """)
 
@@ -62,8 +63,20 @@ class AutoSysGuard(QMainWindow):
 
         menubar = self.menuBar()
 
+        system_menu = menubar.addMenu('Scan')
+        system_menu.addAction(self.create_menu_action('Quick Scan', self.quickscan))
+        system_menu.addAction(self.create_menu_action('Full Scan', self.fullscan))
+        system_menu.addAction(self.create_menu_action('Basic Scan', self.basicscan))
+        system_menu.addAction(self.create_menu_action('Automated Scan', self.schedulescan))
+        system_menu.addAction(self.create_menu_action('External Device Scan', self.externalscan))
+
+
         system_menu = menubar.addMenu('System')
-        system_menu.addAction(self.create_menu_action('Run All Scans', self.run_all_scans))
+        system_menu.addAction(self.create_menu_action('Performance Tuning', self.performance_tuning))
+        system_menu.addAction(self.create_menu_action('Power Management', self.power_management))
+        system_menu.addAction(self.create_menu_action('Service Management', self.service_management))
+        system_menu.addAction(self.create_menu_action('User and Group Management', self.userandgroup_management))
+        system_menu.addAction(self.create_menu_action('System Info', self.systeminfo))
 
         network_menu = menubar.addMenu('Network')
         network_menu.addAction(self.create_menu_action('IP Scanner', self.ipscan))
@@ -145,6 +158,56 @@ class AutoSysGuard(QMainWindow):
     def stop_progress(self):
         self.timer.stop()
         self.progress_bar.setValue(100)
+
+    def basicscan(self):
+        self.update_output("Performing Basic Scan...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Scan/basic.sh')
+        self.update_output(output)
+
+    def fullscan(self):
+        self.update_output("Performing Full System Scan...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Scan/full.sh')
+        self.update_output(output)
+
+    def quickscan(self):
+        self.update_output("Performing Ouick System Scan...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Scan/quick.sh')
+        self.update_output(output)
+
+    def schedulescan(self):
+        self.update_output("Performing Automated Scheduled Scan...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Scan/schedule.sh')
+        self.update_output(output)
+
+    def externalscan(self):
+        self.update_output("Performing External Device Scan...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Scan/external.sh')
+        self.update_output(output)
+
+    def performance_tuning(self):
+        self.update_output("Performing Power Tuning")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/System/performance.sh')
+        self.update_output(output)
+
+    def power_management(self):
+        self.update_output("Managing Power...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/System/power.sh')
+        self.update_output(output)
+
+    def service_management(self):
+        self.update_output("Managing Services...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/System/service.sh')
+        self.update_output(output)
+
+    def userandgroup_management(self):
+        self.update_output("Managing User and Group...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/System/userandgroup.sh')
+        self.update_output(output)
+
+    def systeminfo(self):
+        self.update_output("howing System Information...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/System/system_info.sh')
+        self.update_output(output)
 
     def run_all_scans(self):
         self.update_output("Running all scans...")

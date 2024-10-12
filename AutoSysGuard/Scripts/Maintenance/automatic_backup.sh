@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Function to get the time from user (Hour and Minute)
+# Function to get the time from the user (Hour and Minute)
 get_backup_time() {
     backup_time=$(zenity --entry --title="Backup Time" --text="Enter time for backup in HH:MM format (24-hour clock)")
     if [ $? -ne 0 ]; then
@@ -31,8 +31,9 @@ get_backup_time
 hour=$(echo $backup_time | cut -d':' -f1)
 minute=$(echo $backup_time | cut -d':' -f2)
 
-# Backup script path (absolute path)
-backup_script="system_backup.sh"
+# Backup script absolute path (ensure correct path)
+backup_script="AutoSysGuard/Scripts/Maintenance/system_backup.sh"
+log_file="log"
 
 # Construct the cron job time based on the user's frequency selection
 case $schedule in
@@ -40,15 +41,25 @@ case $schedule in
         cron_time="$minute $hour * * *"  # Daily at selected time
         ;;
     "Weekly")
-        selected_day=$(zenity --calendar --title="Select Backup Day" --text="Select the day for the weekly backup" --date-format="%u")
+        selected_day=$(zenity --list --title="Select Day" --text="Select the day of the week for backup" --column="Day" "Sunday" "Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday")
         if [ $? -ne 0 ]; then
             zenity --error --text="Day selection cancelled."
             exit 1
         fi
-        cron_time="$minute $hour * * $selected_day"  # Weekly on selected day and time
+        # Map the selected day to a cron-compatible format (0 for Sunday, 6 for Saturday)
+        case $selected_day in
+            "Sunday") cron_day=0 ;;
+            "Monday") cron_day=1 ;;
+            "Tuesday") cron_day=2 ;;
+            "Wednesday") cron_day=3 ;;
+            "Thursday") cron_day=4 ;;
+            "Friday") cron_day=5 ;;
+            "Saturday") cron_day=6 ;;
+        esac
+        cron_time="$minute $hour * * $cron_day"  # Weekly on selected day and time
         ;;
     "Monthly")
-        selected_day=$(zenity --calendar --title="Select Backup Day" --text="Select the day of the month for the monthly backup" --date-format="%d")
+        selected_day=$(zenity --entry --title="Select Day" --text="Enter the day of the month for the backup (1-31)")
         if [ $? -ne 0 ]; then
             zenity --error --text="Day selection cancelled."
             exit 1
@@ -62,7 +73,7 @@ case $schedule in
 esac
 
 # Add the cron job to schedule the backup, and check for errors
-(crontab -l 2>/dev/null; echo "$cron_time bash $backup_script > /path/to/backup.log 2>&1") | crontab -
+(crontab -l 2>/dev/null; echo "$cron_time bash $backup_script > $log_file 2>&1") | crontab -
 if [ $? -eq 0 ]; then
     zenity --info --text="Backup has been scheduled $schedule at $backup_time."
 else
