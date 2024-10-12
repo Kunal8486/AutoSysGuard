@@ -116,9 +116,32 @@ class AutoSysGuard(QMainWindow):
         monitoring_menu.addAction(self.create_menu_action("CPU Monitoring", self.cpu_monitor))
         monitoring_menu.addAction(self.create_menu_action("Disk Monitoring", self.disk_monitor))
 
+        # Create Terminal Scripts submenu
+        terminal_scripts_menu = menubar.addMenu("Terminals and Scripts")
+        terminal_scripts_menu.addAction(self.create_menu_action("Gnome-Terminal", self.launch_gnome_terminal))
+        terminal_scripts_menu.addAction(self.create_menu_action("Konsole", self.launch_konsole))
+        terminal_scripts_menu.addAction(self.create_menu_action("Xterm", self.launch_xterm))
+        terminal_scripts_menu.addAction(self.create_menu_action("Terminator", self.launch_terminator))
+        terminal_scripts_menu.addAction(self.create_menu_action("Tilix", self.launch_tilix))
+        terminal_scripts_menu.addAction(self.create_menu_action("Alacritty", self.launch_alacritty))
+        terminal_scripts_menu.addAction(self.create_menu_action("Lxterminal", self.launch_lxterminal))
+        terminal_scripts_menu.addAction(self.create_menu_action("Termite", self.launch_termite))
+        terminal_scripts_menu.addAction(self.create_menu_action("Kitty", self.launch_kitty))
+        terminal_scripts_menu.addAction(self.create_menu_action("Bash", self.launch_bash))
+        terminal_scripts_menu.addAction(self.create_menu_action("Zsh", self.launch_zsh))
+        terminal_scripts_menu.addAction(self.create_menu_action("Fish", self.launch_fish))
+        terminal_scripts_menu.addAction(self.create_menu_action("Tcsh", self.launch_tcsh))
+        terminal_scripts_menu.addAction(self.create_menu_action("Dash", self.launch_dash))
+        terminal_scripts_menu.addAction(self.create_menu_action("Ksh", self.launch_ksh))
+        terminal_scripts_menu.addAction(self.create_menu_action("Pwsh", self.launch_pwsh))
+        terminal_scripts_menu.addAction(self.create_menu_action("Csh", self.launch_csh))
+        terminal_scripts_menu.addAction(self.create_menu_action("Openbsd", self.launch_openbsd))
+        terminal_scripts_menu.addAction(self.create_menu_action("Screen", self.launch_screen))
+        terminal_scripts_menu.addAction(self.create_menu_action("Tmux", self.launch_tmux))
+        terminal_scripts_menu.addAction(self.create_menu_action("Mintty", self.launch_mintty))
+        terminal_scripts_menu.addAction(self.create_menu_action("Rxvt", self.launch_rxvt))
+        terminal_scripts_menu.addAction(self.create_menu_action("Termux", self.launch_termux))
 
-        more_menu = menubar.addMenu('More Functions')
-        more_menu.addAction(self.create_menu_action('Setup Intrusion Detection System (IDS)', self.setup_ids))
 
         self.show()
         button_layout = QHBoxLayout()
@@ -133,7 +156,124 @@ class AutoSysGuard(QMainWindow):
         button_layout.addWidget(self.clear_button)
 
 
-    
+
+    def launch_gnome_terminal(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_gnome_terminal.sh')
+        self.update_output(output)
+
+    def launch_konsole(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_konsole.sh')
+        self.update_output(output)
+
+    def launch_xterm(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_xterm.sh')
+        self.update_output(output)
+        
+    def launch_terminator(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_terminator.sh')
+        self.update_output(output)
+
+    def launch_tilix(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_tilix.sh')
+        self.update_output(output)
+
+    def launch_alacritty(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_alacritty.sh')
+        self.update_output(output)
+
+    def launch_lxterminal(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_lxterminal.sh')
+        self.update_output(output)
+
+    def launch_termite(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_termite.sh')
+        self.update_output(output)
+
+    def launch_kitty(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_kitty.sh')
+        self.update_output(output)
+
+    def launch_bash(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_bash.sh')
+        self.update_output(output)
+
+    def launch_zsh(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_zsh.sh')
+        self.update_output(output)
+
+    def launch_fish(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_fish.sh')
+        self.update_output(output)
+
+    def launch_tcsh(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_tcsh.sh')
+        self.update_output(output)
+        
+    def launch_dash(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_dash.sh')
+        self.update_output(output)
+
+    def launch_ksh(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_ksh.sh')
+        self.update_output(output)
+
+    def launch_pwsh(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_pwsh.sh')
+        self.update_output(output)
+
+    def launch_csh(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_csh.sh')
+        self.update_output(output)
+
+    def launch_openbsd(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_openbsd.sh')
+        self.update_output(output)
+
+    def launch_screen(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_screen.sh')
+        self.update_output(output)
+
+    def launch_tmux(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_tmux.sh')
+        self.update_output(output)
+
+    def launch_mintty(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_mintty.sh')
+        self.update_output(output)
+
+    def launch_rxvt(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_rxvt.sh')
+        self.update_output(output)
+
+    def launch_termux(self):
+        self.update_output("Launching...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_termux.sh')
+        self.update_output(output)
+
+
+
     def create_menu_action(self, name, function):
         action = QAction(name, self)
         action.triggered.connect(function)
@@ -341,22 +481,17 @@ class AutoSysGuard(QMainWindow):
 
     def run_anomaly_detection(self):
         self.update_output("Running Machine Learning-Based Anomaly Detection...")
-        output = subprocess.getoutput('./scripts/anomaly_detection.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/SecurityChecks/anomaly_detection.sh')
         self.update_output(output)
 
     def run_compliance_checker(self):
         self.update_output("Running Configuration Compliance Check...")
-        output = subprocess.getoutput('./scripts/compliance_checker.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/SecurityChecks/compilance_checker.sh')
         self.update_output(output)
 
     def run_user_behavior_analytics(self):
         self.update_output("Running User Behavior Analytics...")
-        output = subprocess.getoutput('./scripts/user_behavior_analytics.sh')
-        self.update_output(output)
-
-    def setup_ids(self):
-        self.update_output("Setting Up Intrusion Detection System (IDS)...")
-        output = subprocess.getoutput('./scripts/setup_ids.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/SecurityChecks/ub_analystic.sh')
         self.update_output(output)
 
 
