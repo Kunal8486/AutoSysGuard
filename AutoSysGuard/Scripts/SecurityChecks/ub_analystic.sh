@@ -7,7 +7,7 @@
 # Description: This script monitors user activity (logins, commands, and file access) and generates alerts for anomalous behavior.
 
 LOG_FILE="/var/log/uba_audit.log"
-ALERT_FILE="uba_alerts.txt"
+ALERT_FILE="./log/uba_alerts.txt"
 
 # Function to log actions
 log_action() {

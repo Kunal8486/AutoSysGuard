@@ -349,17 +349,6 @@ class AutoSysGuard(QMainWindow):
         output = subprocess.getoutput('AutoSysGuard/Scripts/System/system_info.sh')
         self.update_output(output)
 
-    def run_all_scans(self):
-        self.update_output("Running all scans...")
-        self.start_progress()
-        self.run_arp_spoofing_detection()
-        self.run_firewall_config()
-        self.run_network_traffic_monitor()
-        self.run_port_scan()
-        self.run_ssh_hardening()
-        self.run_security_audit()
-        self.stop_progress()
-
     def ipscan(self):
         self.update_output("Performing IP's Scan...")
         output = subprocess.getoutput('AutoSysGuard/Scripts/Networks/ip_scanner.sh')
@@ -460,7 +449,7 @@ class AutoSysGuard(QMainWindow):
 
     def run_security_audit(self):
         self.update_output("Performing Security Audit...")
-        output = subprocess.getoutput('AutoSysGuard/Scripts/audit.sh')
+        output = subprocess.getoutput('AutoSysGuard/Scripts/SecurityChecks/Audits/main.sh')
         self.update_output(output)
 
     def run_backup(self):
