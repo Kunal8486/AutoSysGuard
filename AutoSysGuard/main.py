@@ -116,6 +116,12 @@ class AutoSysGuard(QMainWindow):
         monitoring_menu.addAction(self.create_menu_action("CPU Monitoring", self.cpu_monitor))
         monitoring_menu.addAction(self.create_menu_action("Disk Monitoring", self.disk_monitor))
 
+        Threats_detection = menubar.addMenu('Threats and Vulnerability Detection')
+        Threats_detection.addAction(self.create_menu_action("Rootkit Detection ", self.rootkit))
+        Threats_detection.addAction(self.create_menu_action("Detect_Injection", self.injection))
+        Threats_detection.addAction(self.create_menu_action("XSS Detection", self.xss))
+        Threats_detection.addAction(self.create_menu_action("Schedule Rootkit", self.cron_rootkit))
+
         # Create Terminal Scripts submenu
         terminal_scripts_menu = menubar.addMenu("Terminals and Scripts")
         terminal_scripts_menu.addAction(self.create_menu_action("Gnome-Terminal", self.launch_gnome_terminal))
@@ -156,6 +162,10 @@ class AutoSysGuard(QMainWindow):
         button_layout.addWidget(self.clear_button)
 
 
+    def cron_rootkit(self):
+        self.update_output("Launching Root Kit...")
+        output = subprocess.getoutput('AutoSysGuard/Scripts/ThreatsVulnerabilityDetection/rootkit_gui.sh')
+        self.update_output(output)
 
     def launch_gnome_terminal(self):
         self.update_output("Launching...")
@@ -271,8 +281,6 @@ class AutoSysGuard(QMainWindow):
         self.update_output("Launching...")
         output = subprocess.getoutput('AutoSysGuard/Scripts/Terminals/launch_termux.sh')
         self.update_output(output)
-
-
 
     def create_menu_action(self, name, function):
         action = QAction(name, self)
@@ -508,6 +516,42 @@ class AutoSysGuard(QMainWindow):
         self.process.start('bash', ['-c', 'AutoSysGuard/Scripts/Monitoring/disk.sh'])  # Run the Disk monitor in Bash
         self.start_progress()
 
+
+    def rootkit(self):
+        self.update_output("Launching Root-Kit...")
+        try:
+            self.process = QProcess(self)
+            self.process.readyReadStandardOutput.connect(self.handle_output)
+            self.process.start('bash', ['-c', 'AutoSysGuard/Scripts/ThreatsVulnerabilityDetection/rootkit.sh']) 
+            self.start_progress()
+
+
+        except Exception as e:
+            self.update_output(f"Error: {str(e)}") 
+
+    def injection(self):
+        self.update_output("Launching SQL Injection ...")
+        try:
+            self.process = QProcess(self)
+            self.process.readyReadStandardOutput.connect(self.handle_output)
+            self.process.start('bash', ['-c', 'AutoSysGuard/Scripts/ThreatsVulnerabilityDetection/detect_injection_gui.sh']) 
+            self.start_progress()
+
+
+        except Exception as e:
+            self.update_output(f"Error: {str(e)}") 
+
+    def xss(self):
+        self.update_output("Launching Cross Site Scripting...")
+        try:
+            self.process = QProcess(self)
+            self.process.readyReadStandardOutput.connect(self.handle_output)
+            self.process.start('bash', ['-c', 'AutoSysGuard/Scripts/ThreatsVulnerabilityDetection/xss_detection_gui.sh']) 
+            self.start_progress()
+
+
+        except Exception as e:
+            self.update_output(f"Error: {str(e)}") 
 
 
     #Handle Output

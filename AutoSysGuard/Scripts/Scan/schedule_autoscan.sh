@@ -48,7 +48,7 @@ prompt_debug_mode() {
         [yY]|[yY][eE][sS])
             DEBUG=true
             debug "Creating log file..."
-            LOG_FILE="$(pwd)/AutoSysGuard.log"  # Create log file when debug mode is enabled
+            LOG_FILE="log/Scheduled_Scan_AutoSysGuard.log"  # Create log file when debug mode is enabled
             exec 2> >(tee -a "$LOG_FILE")   # Redirect standard error to log file with tee for real-time logging
             ;;
         *)
